@@ -3,35 +3,39 @@
 .PHONY: boot-macos
 
 boot-macos:
+						## Install Brew
+						sudo true
+						curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sudo -u $$USER bash
+
 						## Install Git
 						brew install git
-
-						## Install Docker
-						brew install docker
-
-						## Install Docker-Compose
-						brew install docker-compose
-
-						## Install Docker Desktop app
-						brew install --cask docker
 
 						## Install PHPStorm
 						brew install --cask phpstorm
 
 						## Install Slack
 						brew install --cask slack
-            
+
 						## Install iTerm2
-            brew install --cask iterm2
+						brew install --cask iterm2
+
+						## Install Docker Desktop app
+						brew install --cask docker
+
+						## Install Docker
+						brew install docker
 
 						## Install Starship
-            brew install starship
+						brew install starship
 
 						## Install Symfony CLI
 						brew install symfony-cli/tap/symfony-cli
 
-						## Move Symfony CLI
-						mv /Users/$(USER)/.symfony/bin/symfony /usr/local/bin/symfony
+						## Install Mutagen Compose
+						brew install mutagen-io/mutagen/mutagen-compose-beta
+
+						## Install Oh My ZSH
+						curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sudo -u $$USER bash
 
 # Help
 .PHONY: help
