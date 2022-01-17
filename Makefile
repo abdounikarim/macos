@@ -3,6 +3,9 @@
 .PHONY: boot-macos
 
 boot-macos:
+						## Install Git
+						brew install git
+
 						## Install Docker
 						brew install docker
 
