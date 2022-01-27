@@ -37,6 +37,24 @@ boot-macos:
 						## Install Oh My ZSH
 						curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sudo -u $$USER bash
 
+						## Install PHP
+						brew install php
+
+						## Install Composer
+						brew install composer
+
+						## Install PHP
+						pecl install xdebug
+
+						## Add Blackfire repository
+						brew tap blackfireio/homebrew-blackfire
+
+						## Install Blackfire
+						brew install blackfire
+
+						## Install Blackfire probe
+						blackfire php:install
+
 # Help
 .PHONY: help
 
