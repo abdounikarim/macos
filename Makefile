@@ -10,6 +10,18 @@ boot-macos:
 						## Install Git
 						brew install git
 
+						## Install Brave Browser
+						brew install --cask brave-browser
+
+						## Install Bitwarden
+						brew install --cask bitwarden
+
+						## Install Notion
+						brew install --cask notion
+
+						## Install Sublime Text
+						brew install --cask sublime-text
+
 						## Install PHPStorm
 						brew install --cask phpstorm
 
@@ -21,6 +33,15 @@ boot-macos:
 
 						## Install Docker Desktop app
 						brew install --cask docker
+
+						## Install Postman
+						brew install --cask postman
+
+						## Install Rectangle
+						brew install --cask rectangle
+
+						## Install Zoom
+						brew install --cask zoom
 
 						## Install Docker
 						brew install docker
@@ -54,6 +75,15 @@ boot-macos:
 
 						## Install Blackfire probe
 						blackfire php:install
+
+						## Install Yarn
+						brew install yarn
+
+						## Install Ansible
+						brew install ansible
+
+						## Install Traefik
+						brew install traefik
 
 # Help
 .PHONY: help
