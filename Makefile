@@ -1,89 +1,75 @@
 # Install your environment
+.PHONY: install update
 
-.PHONY: boot-macos
+CASK_PACKAGES = bitwarden docker iterm2 notion phpstorm postman rectangle slack sublime-text the-unarchiver zoom
+CLI_PACKAGES = git docker mutagen-io/mutagen/mutagen-compose-beta marp-cli starship php composer symfony-cli/tap/symfony-cli blackfire yarn ansible
 
-boot-macos:
-						## Install Brew
+install:				## Install dependencies
+install: install-brew blackfire-repository install-cask-packages install-cli-packages \
+install-blackfire-probe install-xdebug create-gitignore-file install-oh-my-zsh change-zsh-theme activate-hidden-files
+
+install-brew:			## Install Brew
 						sudo true
 						curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sudo -u $$USER bash
 
-						## Install Git
-						brew install git
-
-						## Install Brave Browser
-						brew install --cask brave-browser
-
-						## Install Bitwarden
-						brew install --cask bitwarden
-
-						## Install Notion
-						brew install --cask notion
-
-						## Install Sublime Text
-						brew install --cask sublime-text
-
-						## Install PHPStorm
-						brew install --cask phpstorm
-
-						## Install Slack
-						brew install --cask slack
-
-						## Install iTerm2
-						brew install --cask iterm2
-
-						## Install Docker Desktop app
-						brew install --cask docker
-
-						## Install Postman
-						brew install --cask postman
-
-						## Install Rectangle
-						brew install --cask rectangle
-
-						## Install Zoom
-						brew install --cask zoom
-
-						## Install Docker
-						brew install docker
-
-						## Install Starship
-						brew install starship
-
-						## Install Symfony CLI
-						brew install symfony-cli/tap/symfony-cli
-
-						## Install Mutagen Compose
-						brew install mutagen-io/mutagen/mutagen-compose-beta
-
-						## Install Oh My ZSH
-						curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sudo -u $$USER bash
-
-						## Install PHP
-						brew install php
-
-						## Install Composer
-						brew install composer
-
-						## Install PHP
-						pecl install xdebug
-
-						## Add Blackfire repository
+blackfire-repository:	## Add Blackfire repository
 						brew tap blackfireio/homebrew-blackfire
 
-						## Install Blackfire
-						brew install blackfire
+install-cask-packages:	## Install Cask Packages
+						@for v in $(CASK_PACKAGES) ; do \
+							if brew ls --cask --versions $$v > /dev/null; then \
+								echo "\033[0;33mPackage already installed: $$v\033[m";\
+							else \
+								echo "\033[0;34m$$v is not installed";\
+								brew install $$v;\
+								echo "\033[0;32mPackage installed: $$v\033[m";\
+							fi \
+						done
 
-						## Install Blackfire probe
+install-cli-packages:	## Install Cli Packages
+						@for v in $(CLI_PACKAGES) ; do \
+							if brew ls --versions $$v > /dev/null; then \
+								echo "\033[0;33mPackage already installed: $$v\033[m";\
+							else \
+								echo "\033[0;34m$$v is not installed";\
+								brew install $$v;\
+								echo "\033[0;32mPackage installed: $$v\033[m";\
+							fi \
+						done
+
+install-blackfire-probe:## Install Blackfire probe
 						blackfire php:install
 
-						## Install Yarn
-						brew install yarn
+install-xdebug:			## Install xdebug
+						pecl install xdebug
 
-						## Install Ansible
-						brew install ansible
+create-gitignore-file:	## Create global gitignore file and exclude it from git
+						touch ~/.gitignore
+						echo ".idea\n.DS_Store\n" >> ~/.gitignore
+						git config --global core.excludeFiles ~/.gitignore
 
-						## Install Traefik
-						brew install traefik
+install-oh-my-zsh:		## Install Oh My ZSH
+						curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sudo -u $$USER bash
+
+change-zsh-theme:		## Change ZSH default theme to cloud
+						sed -i '' 's/ZSH_THEME="robbyrussell"/ZSH_THEME="cloud"/' ~/.zshrc
+
+activate-hidden-files:	## Show hidden files and relaunch Finder
+						defaults write com.apple.finder AppleShowAllFiles TRUE
+						killall Finder
+
+# Update
+update:					## Update brew and Oh My ZSH
+update: update-brew upgrade-brew update-omz
+
+update-brew:			## Update dependencies
+						brew update
+
+upgrade-brew:			## Upgrade all packaqges
+						brew upgrade
+
+update-omz:				## Update Oh My ZSH
+						omz update
 
 # Help
 .PHONY: help
