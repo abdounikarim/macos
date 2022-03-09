@@ -1,7 +1,7 @@
 # Install your environment
 .PHONY: install update
 
-CASK_PACKAGES = brave-browser bitwarden docker iterm2 notion phpstorm postman rectangle slack sublime-text the-unarchiver zoom
+CASK_PACKAGES = brave-browser bitwarden docker iterm2 notion phpstorm postman rectangle slack sublime-text the-unarchiver
 CLI_PACKAGES = git docker mutagen-io/mutagen/mutagen-compose-beta marp-cli starship php composer symfony-cli/tap/symfony-cli blackfire yarn ansible
 
 install:				## Install dependencies
@@ -21,7 +21,7 @@ install-cask-packages:	## Install Cask Packages
 								echo "\033[0;33mPackage already installed: $$v\033[m";\
 							else \
 								echo "\033[0;34m$$v is not installed";\
-								brew install $$v;\
+								brew install --cask $$v;\
 								echo "\033[0;32mPackage installed: $$v\033[m";\
 							fi \
 						done
