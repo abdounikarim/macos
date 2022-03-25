@@ -76,7 +76,7 @@ install-zsh-fast-syntax:## Install ZSH fast syntax highlighting
 						brew install zsh-fast-syntax-highlighting
 
 add-zsh-fast-syntax:	## Add zsh fast syntax highlighting configuration in .zshrc file
-						echo 'source $(brew --prefix)/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh' >> ~/.zshrc
+						echo 'source $$(brew --prefix)/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh' >> ~/.zshrc
 
 change-zsh-theme:		## Change ZSH default theme to cloud
 						sed -i '' 's/ZSH_THEME="robbyrussell"/ZSH_THEME="cloud"/' ~/.zshrc
