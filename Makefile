@@ -82,7 +82,7 @@ change-zsh-theme:		## Change ZSH default theme to cloud
 						sed -i '' 's/ZSH_THEME="robbyrussell"/ZSH_THEME="cloud"/' ~/.zshrc
 
 install-nerd-font:		## Install Nerd Font (required for starship)
-						brew tap homebrew/cask-fonts && brew install --cask font-fira-code
+						brew tap homebrew/cask-fonts && brew install --cask font-hack-nerd-font
 
 add-starship-config:	## Add starship configuration in .zshrc
 						echo 'eval "$$(starship init zsh)"' >> ~/.zshrc
