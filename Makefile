@@ -2,14 +2,14 @@
 .PHONY: install update
 
 CASK_PACKAGES = brave-browser bitwarden docker iterm2 notion phpstorm postman rectangle slack sublime-text the-unarchiver
-CLI_PACKAGES = git docker mutagen-io/mutagen/mutagen-compose-beta marp-cli starship php composer symfony-cli/tap/symfony-cli blackfire yarn ansible
+CLI_PACKAGES = git docker mutagen-io/mutagen/mutagen-compose marp-cli starship php composer symfony-cli/tap/symfony-cli blackfire yarn ansible topgrade
 
 install:				## Install dependencies
 install: install-brew blackfire-repository install-cask-packages install-cli-packages \
 authorize-rectangle open-rectangle install-blackfire-probe install-xdebug create-gitignore-file \
 install-oh-my-zsh install-zsh-auto add-zsh-autosuggestion install-zsh-vi-mode add-zsh-vi-mode \
 install-zsh-fast-syntax add-zsh-fast-syntax change-zsh-theme install-nerd-font add-starship-config \
-add-starship-file add-iterm-file add-phpstorm-file activate-hidden-files
+add-starship-file add-iterm-file activate-hidden-files
 
 install-brew:			## Install Brew
 						sudo true
@@ -93,25 +93,53 @@ add-starship-file:		## Add starship.toml configuration file
 add-iterm-file:			## Add iTerm customize configuration file
 						cp templates/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.iterm2.plist
 
-add-phpstorm-file:		## Add PHPStorm customize configuration file
-						cp templates/com.jetbrains.PhpStorm.plist ~/Library/Preferences/com.jetbrains.PhpStorm.plist
-
 activate-hidden-files:	## Show hidden files and relaunch Finder
 						defaults write com.apple.finder AppleShowAllFiles TRUE
 						killall Finder
 
 # Update
-update:					## Update brew and Oh My ZSH
-update: update-brew upgrade-brew update-omz
+update:					## Update everything
+						topgrade
 
-update-brew:			## Update dependencies
-						brew update
+# Remove
+remove:
+remove:					remove-xdebug delete-xdebug-config delete-gitignore-file delete-nerd-font delete-starship-file delete-iterm-file remove-cask-packages remove-cli-packages remove-oh-my-zsh remove-brew
 
-upgrade-brew:			## Upgrade all packaqges
-						brew upgrade
+remove-xdebug:			## Install xdebug
+						pecl uninstall xdebug
 
-update-omz:				## Update Oh My ZSH
-						~/.oh-my-zsh/tools/upgrade.sh
+delete-xdebug-config:	## Delete xdebug config
+						sed -i '' '/zend_extension="xdebug.so"/d' /usr/local/etc/php/8.1/php.ini
+
+delete-gitignore-file:	## Create global gitignore file and exclude it from git
+						rm -f ~/.gitignore
+
+delete-nerd-font:		## Delete Nerd Font
+						rm -f ~/Library/Fonts/Hack*
+
+delete-starship-file:	## Delete starship.toml configuration file
+						rm -f ~/.config/starship.toml
+
+delete-iterm-file:		## Delete iTerm customize configuration file
+						rm -f ~/Library/Preferences/com.googlecode.iterm2.plist
+
+remove-cask-packages:	## Remove Cask Packages
+						@for v in $(CASK_PACKAGES) ; do \
+							brew uninstall --cask $$v;\
+						done
+
+remove-cli-packages:	## Remove Cli Packages
+						@for v in $(CLI_PACKAGES) ; do \
+							brew uninstall $$v;\
+						done
+
+remove-oh-my-zsh:		## Remove Oh My ZSH
+						chmod a+x ~/.oh-my-zsh/tools/uninstall.sh
+						~/.oh-my-zsh/tools/uninstall.sh
+
+remove-brew:			## Remove Brew
+						sudo true
+						curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh | sudo -u $$USER bash
 
 # Help
 .PHONY: help
