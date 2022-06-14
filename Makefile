@@ -1,21 +1,31 @@
-# Install your environment
-.PHONY: install update
+##
+## # Install
+##---------------------------------------------------------------------------
+
+.PHONY: install install-brew blackfire-repository install-cask-packages install-cli-packages \
+authorize-rectangle open-rectangle install-blackfire-probe install-xdebug create-gitignore-file \
+install-oh-my-zsh install-zsh-auto add-zsh-autosuggestion install-zsh-vi-mode add-zsh-vi-mode \
+install-zsh-fast-syntax add-zsh-fast-syntax change-zsh-theme install-nerd-font add-starship-config \
+add-starship-file add-iterm-file activate-hidden-files
 
 CASK_PACKAGES = brave-browser bitwarden docker iterm2 notion phpstorm postman rectangle slack sublime-text the-unarchiver
-CLI_PACKAGES = git docker mutagen-io/mutagen/mutagen-compose-beta marp-cli starship php composer symfony-cli/tap/symfony-cli blackfire yarn ansible
+CLI_PACKAGES = git docker mutagen-io/mutagen/mutagen-compose marp-cli starship php composer symfony-cli/tap/symfony-cli blackfire yarn ansible topgrade
 
 install:				## Install dependencies
 install: install-brew blackfire-repository install-cask-packages install-cli-packages \
-install-blackfire-probe install-xdebug create-gitignore-file install-oh-my-zsh change-zsh-theme activate-hidden-files
+authorize-rectangle open-rectangle install-blackfire-probe install-xdebug create-gitignore-file \
+install-oh-my-zsh install-zsh-auto add-zsh-autosuggestion install-zsh-vi-mode add-zsh-vi-mode \
+install-zsh-fast-syntax add-zsh-fast-syntax change-zsh-theme install-nerd-font add-starship-config \
+add-starship-file add-iterm-file activate-hidden-files
 
-install-brew:			## Install Brew
+install-brew:
 						sudo true
 						curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sudo -u $$USER bash
 
-blackfire-repository:	## Add Blackfire repository
+blackfire-repository:
 						brew tap blackfireio/homebrew-blackfire
 
-install-cask-packages:	## Install Cask Packages
+install-cask-packages:
 						@for v in $(CASK_PACKAGES) ; do \
 							if brew ls --cask --versions $$v > /dev/null; then \
 								echo "\033[0;33mPackage already installed: $$v\033[m";\
@@ -26,7 +36,7 @@ install-cask-packages:	## Install Cask Packages
 							fi \
 						done
 
-install-cli-packages:	## Install Cli Packages
+install-cli-packages:
 						@for v in $(CLI_PACKAGES) ; do \
 							if brew ls --versions $$v > /dev/null; then \
 								echo "\033[0;33mPackage already installed: $$v\033[m";\
@@ -37,41 +47,125 @@ install-cli-packages:	## Install Cli Packages
 							fi \
 						done
 
-install-blackfire-probe:## Install Blackfire probe
+authorize-rectangle:
+						xattr -r -d com.apple.quarantine /Applications/Rectangle.app
+
+open-rectangle:
+						open -a rectangle
+
+install-blackfire-probe:
 						blackfire php:install
 
-install-xdebug:			## Install xdebug
+install-xdebug:
 						pecl install xdebug
 
-create-gitignore-file:	## Create global gitignore file and exclude it from git
+create-gitignore-file:
 						touch ~/.gitignore
 						echo ".idea\n.DS_Store\n" >> ~/.gitignore
 						git config --global core.excludeFiles ~/.gitignore
 
-install-oh-my-zsh:		## Install Oh My ZSH
+install-oh-my-zsh:
 						curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sudo -u $$USER bash
 
-change-zsh-theme:		## Change ZSH default theme to cloud
+install-zsh-auto:
+						brew install zsh-autosuggestions
+
+add-zsh-autosuggestion:
+						echo 'source $$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh' >> ~/.zshrc
+
+install-zsh-vi-mode:
+						brew install zsh-vi-mode
+
+add-zsh-vi-mode:
+						echo 'source $$(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh' >> ~/.zshrc
+
+install-zsh-fast-syntax:
+						brew install zsh-fast-syntax-highlighting
+
+add-zsh-fast-syntax:
+						echo 'source $$(brew --prefix)/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh' >> ~/.zshrc
+
+change-zsh-theme:
 						sed -i '' 's/ZSH_THEME="robbyrussell"/ZSH_THEME="cloud"/' ~/.zshrc
 
-activate-hidden-files:	## Show hidden files and relaunch Finder
+install-nerd-font:
+						brew tap homebrew/cask-fonts && brew install --cask font-hack-nerd-font
+
+add-starship-config:
+						echo 'eval "$$(starship init zsh)"' >> ~/.zshrc
+
+add-starship-file:
+						mkdir -p ~/.config && cp templates/starship.toml ~/.config/starship.toml
+
+add-iterm-file:
+						cp templates/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.iterm2.plist
+
+activate-hidden-files:
 						defaults write com.apple.finder AppleShowAllFiles TRUE
 						killall Finder
 
-# Update
-update:					## Update brew and Oh My ZSH
-update: update-brew upgrade-brew update-omz
+##
+## # Update
+##---------------------------------------------------------------------------
 
-update-brew:			## Update dependencies
-						brew update
+.PHONY: update
 
-upgrade-brew:			## Upgrade all packaqges
-						brew upgrade
+update:					## Update everything
+						topgrade
 
-update-omz:				## Update Oh My ZSH
-						omz update
+##
+## # Remove
+##---------------------------------------------------------------------------
 
-# Help
+.PHONY: remove remove-xdebug delete-xdebug-config delete-gitignore-file delete-nerd-font \
+delete-starship-file delete-iterm-file remove-cask-packages remove-cli-packages \
+remove-oh-my-zsh remove-brew
+
+remove:					## Remove dependencies
+remove:					remove-xdebug delete-xdebug-config delete-gitignore-file delete-nerd-font \
+delete-starship-file delete-iterm-file remove-cask-packages remove-cli-packages remove-oh-my-zsh \
+remove-brew
+
+remove-xdebug:
+						pecl uninstall xdebug
+
+delete-xdebug-config:
+						sed -i '' '/zend_extension="xdebug.so"/d' /usr/local/etc/php/8.1/php.ini
+
+delete-gitignore-file:
+						rm -f ~/.gitignore
+
+delete-nerd-font:
+						rm -f ~/Library/Fonts/Hack*
+
+delete-starship-file:
+						rm -f ~/.config/starship.toml
+
+delete-iterm-file:
+						rm -f ~/Library/Preferences/com.googlecode.iterm2.plist
+
+remove-cask-packages:
+						@for v in $(CASK_PACKAGES) ; do \
+							brew uninstall --cask $$v;\
+						done
+
+remove-cli-packages:
+						@for v in $(CLI_PACKAGES) ; do \
+							brew uninstall $$v;\
+						done
+
+remove-oh-my-zsh:
+						chmod a+x ~/.oh-my-zsh/tools/uninstall.sh
+						~/.oh-my-zsh/tools/uninstall.sh
+
+remove-brew:
+						sudo true
+						curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh | sudo -u $$USER bash
+
+##
+## # Help
+##---------------------------------------------------------------------------
+
 .PHONY: help
 
 help:					## Display help
