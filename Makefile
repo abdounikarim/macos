@@ -6,14 +6,14 @@
 authorize-rectangle open-rectangle install-blackfire-probe install-xdebug create-gitignore-file \
 update-default-config install-oh-my-zsh install-zsh-auto add-zsh-autosuggestion install-zsh-vi-mode \
 add-zsh-vi-mode install-zsh-fast-syntax add-zsh-fast-syntax change-zsh-theme install-nerd-font \
-add-docker-config add-starship-config add-starship-file add-iterm-file activate-hidden-files
+global-makefile add-starship-config add-starship-file add-iterm-file activate-hidden-files
 
 install:				## Install dependencies
 install: install-brew blackfire-repository install-cask-packages install-cli-packages \
 authorize-rectangle open-rectangle install-blackfire-probe install-xdebug create-gitignore-file \
 update-default-config install-oh-my-zsh install-zsh-auto add-zsh-autosuggestion install-zsh-vi-mode \
 add-zsh-vi-mode install-zsh-fast-syntax add-zsh-fast-syntax change-zsh-theme install-nerd-font \
-add-docker-config add-starship-config add-starship-file add-iterm-file activate-hidden-files
+global-makefile add-starship-config add-starship-file add-iterm-file activate-hidden-files
 
 install-brew:
 						sudo true
@@ -93,8 +93,8 @@ change-zsh-theme:
 install-nerd-font:
 						brew tap homebrew/cask-fonts && brew install --cask font-hack-nerd-font
 
-add-docker-config:
-						echo 'export PATH=$$HOME/.docker/bin:/usr/local/bin:$$PATH' >> ~/.zshrc
+global-makefile:
+						echo "alias gmake='make -f ~/Web/macos/Makefile'" >> ~/.zshrc
 
 add-starship-config:
 						echo 'eval "$$(starship init zsh)"' >> ~/.zshrc
