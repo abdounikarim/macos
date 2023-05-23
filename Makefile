@@ -122,12 +122,12 @@ update:					## Update everything
 
 .PHONY: remove remove-xdebug delete-xdebug-config delete-gitignore-file delete-nerd-font \
 delete-starship-file delete-iterm-file remove-cask-packages remove-cli-packages \
-remove-oh-my-zsh remove-brew
+remove-oh-my-zsh remove-brew delete-zshrc-file
 
 remove:					## Remove dependencies
 remove:					remove-xdebug delete-xdebug-config delete-gitignore-file delete-nerd-font \
 delete-starship-file delete-iterm-file remove-cask-packages remove-cli-packages remove-oh-my-zsh \
-remove-brew
+remove-brew delete-zshrc-file
 
 remove-xdebug:
 						pecl uninstall xdebug
@@ -164,6 +164,9 @@ remove-oh-my-zsh:
 remove-brew:
 						sudo true
 						curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh | sudo -u $$USER bash
+
+delete-zshrc-file:
+						rm -f ~/.zshrc
 
 ##
 ## # Help
