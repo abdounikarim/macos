@@ -8,9 +8,6 @@ update-default-config install-oh-my-zsh install-zsh-auto add-zsh-autosuggestion 
 add-zsh-vi-mode install-zsh-fast-syntax add-zsh-fast-syntax change-zsh-theme install-nerd-font \
 add-docker-config add-starship-config add-starship-file add-iterm-file activate-hidden-files
 
-CASK_PACKAGES = brave-browser bitwarden docker iterm2 notion phpstorm postman rectangle slack sublime-text the-unarchiver
-CLI_PACKAGES = git docker mutagen-io/mutagen/mutagen-compose marp-cli starship php composer symfony-cli/tap/symfony-cli blackfire yarn ansible topgrade
-
 install:				## Install dependencies
 install: install-brew blackfire-repository install-cask-packages install-cli-packages \
 authorize-rectangle open-rectangle install-blackfire-probe install-xdebug create-gitignore-file \
@@ -26,24 +23,26 @@ blackfire-repository:
 						brew tap blackfireio/homebrew-blackfire
 
 install-cask-packages:
-						@for v in $(CASK_PACKAGES) ; do \
-							if brew ls --cask --versions $$v > /dev/null; then \
-								echo "\033[0;33mPackage already installed: $$v\033[m";\
+						@grep -v '^#' packages/cask.md | grep -v '^[[:space:]]*$$' | while read -r package; do \
+							package_name=$$(echo "$$package" | sed 's/^- //'); \
+							if brew ls --cask --versions $$package_name > /dev/null; then \
+								echo "\033[0;33mPackage already installed: $$package_name\033[m";\
 							else \
-								echo "\033[0;34m$$v is not installed";\
-								brew install --cask $$v;\
-								echo "\033[0;32mPackage installed: $$v\033[m";\
+								echo "\033[0;34m$$package_name is not installed";\
+								brew install --cask $$package_name;\
+								echo "\033[0;32mPackage installed: $$package_name\033[m";\
 							fi \
 						done
 
 install-cli-packages:
-						@for v in $(CLI_PACKAGES) ; do \
-							if brew ls --versions $$v > /dev/null; then \
-								echo "\033[0;33mPackage already installed: $$v\033[m";\
+						@grep -v '^#' packages/cli.md | grep -v '^[[:space:]]*$$' | while read -r package; do \
+							package_name=$$(echo "$$package" | sed 's/^- //'); \
+							if brew ls --versions $$package_name > /dev/null; then \
+								echo "\033[0;33mPackage already installed: $$package_name\033[m";\
 							else \
-								echo "\033[0;34m$$v is not installed";\
-								brew install $$v;\
-								echo "\033[0;32mPackage installed: $$v\033[m";\
+								echo "\033[0;34m$$package_name is not installed";\
+								brew install $$package_name;\
+								echo "\033[0;32mPackage installed: $$package_name\033[m";\
 							fi \
 						done
 
@@ -151,13 +150,15 @@ delete-iterm-file:
 						rm -f ~/Library/Preferences/com.googlecode.iterm2.plist
 
 remove-cask-packages:
-						@for v in $(CASK_PACKAGES) ; do \
-							brew uninstall --cask $$v;\
+						@grep -v '^#' packages/cask.md | grep -v '^[[:space:]]*$$' | while read -r package; do \
+							package_name=$$(echo "$$package" | sed 's/^- //'); \
+							brew uninstall --cask $$package_name;\
 						done
 
 remove-cli-packages:
-						@for v in $(CLI_PACKAGES) ; do \
-							brew uninstall $$v;\
+						@grep -v '^#' packages/cli.md | grep -v '^[[:space:]]*$$' | while read -r package; do \
+							package_name=$$(echo "$$package" | sed 's/^- //'); \
+							brew uninstall $$package_name;\
 						done
 
 remove-oh-my-zsh:
