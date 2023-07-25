@@ -94,7 +94,7 @@ install-nerd-font:
 						brew tap homebrew/cask-fonts && brew install --cask font-hack-nerd-font
 
 global-makefile:
-						echo "alias gmake='make -f ~/Web/macos/Makefile'" >> ~/.zshrc
+						echo "alias gmake='make -f $(PWD)/Makefile'" >> ~/.zshrc
 
 add-starship-config:
 						echo 'eval "$$(starship init zsh)"' >> ~/.zshrc
