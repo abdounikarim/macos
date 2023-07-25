@@ -135,8 +135,9 @@ remove-brew delete-zshrc-file
 remove-xdebug:
 						pecl uninstall xdebug
 
+delete-xdebug-config:	PHP_VERSION := $(shell php -v | grep -o 'PHP [0-9]\+\.[0-9]\+' | sed 's/PHP //')
 delete-xdebug-config:
-						sed -i '' '/zend_extension="xdebug.so"/d' /usr/local/etc/php/8.1/php.ini
+						sed -i '' '/zend_extension="xdebug.so"/d' /usr/local/etc/php/$(PHP_VERSION)/php.ini
 
 delete-gitignore-file:
 						rm -f ~/.gitignore
