@@ -1,6 +1,7 @@
 # Cli list - installed by homebrew, in alphabetical order
 ## Customize it to your needs
 
+- bat
 - git
 - docker
 - mutagen-io/mutagen/mutagen-compose
