@@ -9,7 +9,16 @@
 - php
 - composer
 - symfony-cli/tap/symfony-cli
-- blackfire
+- node
 - yarn
 - ansible
 - topgrade
+- zsh-autosuggestions
+- zsh-fast-syntax-highlighting
+- zsh-vi-mode
+
+## [blackfire](tap.md#blackfire)
+- blackfire
+
+## [box](tap.md#box)
+- box
