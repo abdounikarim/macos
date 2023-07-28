@@ -5,13 +5,13 @@
 .PHONY: install install-brew add-tap-packages install-cask-packages install-cli-packages \
 authorize-rectangle open-rectangle install-blackfire-probe install-xdebug create-gitignore-file \
 update-default-config install-oh-my-zsh add-zsh-autosuggestion add-zsh-vi-mode add-zsh-fast-syntax change-zsh-theme \
-global-makefile add-starship-config add-starship-file add-iterm-file activate-hidden-files
+bat-alias global-makefile add-starship-config add-starship-file add-iterm-file activate-hidden-files
 
 install:				## Install dependencies
 install: install-brew add-tap-packages install-cask-packages install-cli-packages \
 authorize-rectangle open-rectangle install-blackfire-probe install-xdebug create-gitignore-file \
 update-default-config install-oh-my-zsh add-zsh-autosuggestion add-zsh-vi-mode add-zsh-fast-syntax change-zsh-theme \
-global-makefile add-starship-config add-starship-file add-iterm-file activate-hidden-files
+bat-alias global-makefile add-starship-config add-starship-file add-iterm-file activate-hidden-files
 
 install-brew:
 						sudo true
@@ -87,6 +87,9 @@ add-zsh-fast-syntax:
 
 change-zsh-theme:
 						sed -i '' 's/ZSH_THEME="robbyrussell"/ZSH_THEME="cloud"/' ~/.zshrc
+
+bat-alias:
+						echo "alias cat='bat --theme=Dracula'" >> ~/.zshrc
 
 global-makefile:
 						echo "alias gmake='make -f $(PWD)/Makefile'" >> ~/.zshrc
