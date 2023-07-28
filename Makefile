@@ -2,25 +2,32 @@
 ## # Install
 ##---------------------------------------------------------------------------
 
-.PHONY: install install-brew blackfire-repository install-cask-packages install-cli-packages \
+.PHONY: install install-brew add-tap-packages install-cask-packages install-cli-packages \
 authorize-rectangle open-rectangle install-blackfire-probe install-xdebug create-gitignore-file \
-update-default-config install-oh-my-zsh install-zsh-auto add-zsh-autosuggestion install-zsh-vi-mode \
-add-zsh-vi-mode install-zsh-fast-syntax add-zsh-fast-syntax change-zsh-theme install-nerd-font \
+update-default-config install-oh-my-zsh add-zsh-autosuggestion add-zsh-vi-mode add-zsh-fast-syntax change-zsh-theme \
 global-makefile add-starship-config add-starship-file add-iterm-file activate-hidden-files
 
 install:				## Install dependencies
-install: install-brew blackfire-repository install-cask-packages install-cli-packages \
+install: install-brew add-tap-packages install-cask-packages install-cli-packages \
 authorize-rectangle open-rectangle install-blackfire-probe install-xdebug create-gitignore-file \
-update-default-config install-oh-my-zsh install-zsh-auto add-zsh-autosuggestion install-zsh-vi-mode \
-add-zsh-vi-mode install-zsh-fast-syntax add-zsh-fast-syntax change-zsh-theme install-nerd-font \
+update-default-config install-oh-my-zsh add-zsh-autosuggestion add-zsh-vi-mode add-zsh-fast-syntax change-zsh-theme \
 global-makefile add-starship-config add-starship-file add-iterm-file activate-hidden-files
 
 install-brew:
 						sudo true
 						curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sudo -u $$USER bash
 
-blackfire-repository:
-						brew tap blackfireio/homebrew-blackfire
+add-tap-packages:
+						@grep -v '^#' packages/tap.md | grep -v '^[[:space:]]*$$' | while read -r repository; do \
+							repository_name=$$(echo "$$repository" | sed 's/^- //'); \
+							if brew tap | grep $$repository_name > /dev/null; then \
+								echo "\033[0;33mRepository already installed: $$repository_name\033[m";\
+							else \
+								echo "\033[0;34m$$repository_name is not installed";\
+								brew tap $$repository_name;\
+								echo "\033[0;32mRepository installed: $$repository_name\033[m";\
+							fi \
+						done
 
 install-cask-packages:
 						@grep -v '^#' packages/cask.md | grep -v '^[[:space:]]*$$' | while read -r package; do \
@@ -69,29 +76,17 @@ update-default-config:
 install-oh-my-zsh:
 						curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sudo -u $$USER bash
 
-install-zsh-auto:
-						brew install zsh-autosuggestions
-
 add-zsh-autosuggestion:
 						echo 'source $$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh' >> ~/.zshrc
 
-install-zsh-vi-mode:
-						brew install zsh-vi-mode
-
 add-zsh-vi-mode:
 						echo 'source $$(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh' >> ~/.zshrc
-
-install-zsh-fast-syntax:
-						brew install zsh-fast-syntax-highlighting
 
 add-zsh-fast-syntax:
 						echo 'source $$(brew --prefix)/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh' >> ~/.zshrc
 
 change-zsh-theme:
 						sed -i '' 's/ZSH_THEME="robbyrussell"/ZSH_THEME="cloud"/' ~/.zshrc
-
-install-nerd-font:
-						brew tap homebrew/cask-fonts && brew install --cask font-hack-nerd-font
 
 global-makefile:
 						echo "alias gmake='make -f $(PWD)/Makefile'" >> ~/.zshrc
