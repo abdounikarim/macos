@@ -60,6 +60,7 @@ open-rectangle:
 						open -a rectangle
 
 install-blackfire-probe:
+						bash -c "$$(curl -L https://installer.blackfire.io/installer.sh)"
 						blackfire php:install
 
 install-xdebug:
