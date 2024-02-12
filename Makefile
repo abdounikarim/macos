@@ -117,6 +117,19 @@ update:					## Update everything
 						topgrade
 
 ##
+## # Sync
+##---------------------------------------------------------------------------
+
+.PHONY: dock-save dock-restore
+
+dock-save:				## Save dock configuration file
+						cp ~/Library/Preferences/com.apple.dock.plist templates/com.apple.dock.plist
+
+dock-restore:			## Restore dock configuration file
+						cp templates/com.apple.dock.plist ~/Library/Preferences/com.apple.dock.plist
+						killall Dock
+
+##
 ## # Remove
 ##---------------------------------------------------------------------------
 
